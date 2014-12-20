@@ -14,72 +14,46 @@
  *  limitations under the License.
  */
 
-package org.mongodb.demos.morphia.model;
+package org.mongodb.demos.mongojack.model;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.mongojack.DBRef;
+import org.mongojack.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(value = "persons" , noClassnameStored = true)
 public class Person {
 
-    @Id
-    ObjectId id;
+    @ObjectId
+    @JsonProperty("_id")
+    private String id;
 
-    @Property("first_name")
+    @JsonProperty("first_name")
     private String firstName;
 
-    @Property("last_name")
+    @JsonProperty("last_name")
     private String lastName;
 
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    @Transient
+    @JsonIgnore
     private String nickName;
 
     private int age;
 
-    private List<Address> addresses;
+    private List<Address> addresses = new ArrayList<>();
 
-    @Reference
-    private List<Car> cars = new ArrayList<>();
-
+    private List<DBRef<Car, String>> cars = new ArrayList<>();
 
 
-    public List<Car> getCars() {
-        return cars;
+
+
+    public String getId() {
+        return id;
     }
 
-    public void setCars(List<Car> cars) {
-        this.cars = cars;
-    }
-
-    public void addCar(Car car) {
-        cars.add(car);
-    }
-
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public void addAddress(Address address) {
-        if (addresses == null) {
-            addresses = new ArrayList<>();
-        }
-
-        addresses.add(address);
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -106,17 +80,48 @@ public class Person {
         this.age = age;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+    public void addAddress(Address address){
+        addresses.add(address);
+    }
+
+    public List<DBRef<Car, String>> getCars() {
+        return cars;
+    }
+
+    public void setCars(List<DBRef<Car, String>> cars) {
+        this.cars = cars;
+    }
+
+    public void addCar(Car car) {
+        DBRef<Car, String> carDbRef = new DBRef<>(car.getId(), "cars");
+        cars.add(carDbRef);
+    }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", age=" + age +
                 ", addresses=" + addresses +
-                ", cars=" + cars +
                 '}';
     }
 }

@@ -20,6 +20,9 @@
     </contributors>
     <modules>
         <module>morphia-demos</module>
+        <module>mongojack-demos</module>
+        <module>jongo-demos</module>
+        <module>springdata-demos</module>
     </modules>
 
     <dependencies>

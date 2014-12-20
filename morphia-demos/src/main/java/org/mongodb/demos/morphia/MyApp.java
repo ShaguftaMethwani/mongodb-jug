@@ -16,7 +16,6 @@
 
 package org.mongodb.demos.morphia;
 
-import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import org.mongodb.demos.morphia.model.Address;
 import org.mongodb.demos.morphia.model.Car;
@@ -26,20 +25,17 @@ import org.mongodb.morphia.Morphia;
 
 import java.net.UnknownHostException;
 
-public class AddressApp {
+public class MyApp {
 
     private MongoClient mongoClient;
-    private DB db;
     private Morphia morphia;
     private Datastore datastore;
 
 
     // static block for init
     {
-        MongoClient mongoClient = null;
         try {
             mongoClient = new MongoClient();
-            db = mongoClient.getDB("jug_morphia");
             morphia = new Morphia();
             datastore = morphia.createDatastore(mongoClient,"jug_morphia");
 
@@ -51,7 +47,7 @@ public class AddressApp {
 
     public static void main(String[] args){
 
-        AddressApp app = new AddressApp();
+        MyApp app = new MyApp();
 
         app.insertPersons();
 
@@ -95,7 +91,6 @@ public class AddressApp {
         person.setFirstName("Jane");
         person.setLastName("Owdy");
         person.setAge(30);
-        datastore.save(person);
         datastore.save(person);
 
 
