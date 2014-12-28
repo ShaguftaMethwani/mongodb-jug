@@ -36,8 +36,9 @@ public class MyApp {
     {
         try {
             mongoClient = new MongoClient();
-            morphia = new Morphia();
+            morphia = new Morphia().mapPackage("org.mongodb.demos.morphia.model");
             datastore = morphia.createDatastore(mongoClient,"jug_morphia");
+            datastore.ensureIndexes();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();

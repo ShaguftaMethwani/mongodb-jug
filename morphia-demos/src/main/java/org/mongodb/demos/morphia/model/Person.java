@@ -22,7 +22,7 @@ import org.mongodb.morphia.annotations.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(value = "persons" , noClassnameStored = true)
+@Entity(value = "persons")
 public class Person {
 
     @Id
@@ -45,6 +45,7 @@ public class Person {
     @Transient
     private String nickName;
 
+    @Indexed()
     private int age;
 
     private List<Address> addresses;
